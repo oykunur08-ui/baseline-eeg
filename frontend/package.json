@@ -1,0 +1,33 @@
+{
+
+  "name": "baseline",
+
+  "version": "1.0.0",
+
+  "private": true,
+
+  "scripts": {
+
+    "dev": "next dev",
+
+    "build": "next build",
+
+    "start": "next start",
+
+    "lint": "next lint"
+
+  },
+
+  "dependencies": {
+
+    "next": "15.1.0",
+
+    "react": "^18",
+
+    "react-dom": "^18",
+
+    "framer-motion": "^12.40.0"
+
+  }
+
+}

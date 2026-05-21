@@ -1,0 +1,396 @@
+{
+  "stability": {
+    "experiment": "A \u2014 Session Deviation Variance Reduction",
+    "metric": "Variance of Mahalanobis D(x) across stable test sessions",
+    "interpretation": "Lower = more stable, consistent deviation scoring",
+    "n_subjects": 8,
+    "n_sessions": 30,
+    "mean_deviation_variance": {
+      "raw": 0.9866,
+      "zscore": 0.6504,
+      "coral": 0.0352,
+      "moving_average": 0.7649
+    },
+    "variance_reduction_pct": {
+      "zscore": 34.08,
+      "coral": 96.43,
+      "moving_average": 22.48
+    },
+    "per_subject": [
+      {
+        "subject_id": "S01",
+        "archetype": "subject_A",
+        "stability_index": 0.9826,
+        "dvar_raw": 2.3905,
+        "dvar_zscore": 1.6946,
+        "dvar_coral": 0.022,
+        "dvar_ma": 1.7833,
+        "reduction_zscore": 29.11,
+        "reduction_coral": 99.08,
+        "reduction_ma": 25.4
+      },
+      {
+        "subject_id": "S02",
+        "archetype": "subject_B",
+        "stability_index": 0.9632,
+        "dvar_raw": 1.0475,
+        "dvar_zscore": 0.496,
+        "dvar_coral": 0.0397,
+        "dvar_ma": 0.4694,
+        "reduction_zscore": 52.65,
+        "reduction_coral": 96.21,
+        "reduction_ma": 55.19
+      },
+      {
+        "subject_id": "S03",
+        "archetype": "subject_C",
+        "stability_index": 0.9882,
+        "dvar_raw": 0.9496,
+        "dvar_zscore": 0.4492,
+        "dvar_coral": 0.008,
+        "dvar_ma": 0.7644,
+        "reduction_zscore": 52.7,
+        "reduction_coral": 99.16,
+        "reduction_ma": 19.5
+      },
+      {
+        "subject_id": "S04",
+        "archetype": "subject_A",
+        "stability_index": 0.9789,
+        "dvar_raw": 0.6118,
+        "dvar_zscore": 0.4675,
+        "dvar_coral": 0.0356,
+        "dvar_ma": 0.7742,
+        "reduction_zscore": 23.59,
+        "reduction_coral": 94.19,
+        "reduction_ma": -26.55
+      },
+      {
+        "subject_id": "S05",
+        "archetype": "subject_B",
+        "stability_index": 0.9599,
+        "dvar_raw": 0.8737,
+        "dvar_zscore": 0.5771,
+        "dvar_coral": 0.0408,
+        "dvar_ma": 0.6195,
+        "reduction_zscore": 33.95,
+        "reduction_coral": 95.33,
+        "reduction_ma": 29.09
+      },
+      {
+        "subject_id": "S06",
+        "archetype": "subject_C",
+        "stability_index": 0.9883,
+        "dvar_raw": 0.6491,
+        "dvar_zscore": 0.6597,
+        "dvar_coral": 0.0139,
+        "dvar_ma": 0.797,
+        "reduction_zscore": -1.63,
+        "reduction_coral": 97.86,
+        "reduction_ma": -22.78
+      },
+      {
+        "subject_id": "S07",
+        "archetype": "subject_A",
+        "stability_index": 0.9786,
+        "dvar_raw": 0.3227,
+        "dvar_zscore": 0.3227,
+        "dvar_coral": 0.0742,
+        "dvar_ma": 0.3104,
+        "reduction_zscore": 0.02,
+        "reduction_coral": 77.02,
+        "reduction_ma": 3.81
+      },
+      {
+        "subject_id": "S08",
+        "archetype": "subject_B",
+        "stability_index": 0.9697,
+        "dvar_raw": 1.0483,
+        "dvar_zscore": 0.5363,
+        "dvar_coral": 0.0476,
+        "dvar_ma": 0.6008,
+        "reduction_zscore": 48.84,
+        "reduction_coral": 95.46,
+        "reduction_ma": 42.69
+      }
+    ],
+    "adapter_series": {
+      "subjects": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08"
+      ],
+      "raw": [
+        2.3905,
+        1.0475,
+        0.9496,
+        0.6118,
+        0.8737,
+        0.6491,
+        0.3227,
+        1.0483
+      ],
+      "zscore": [
+        1.6946,
+        0.496,
+        0.4492,
+        0.4675,
+        0.5771,
+        0.6597,
+        0.3227,
+        0.5363
+      ],
+      "coral": [
+        0.022,
+        0.0397,
+        0.008,
+        0.0356,
+        0.0408,
+        0.0139,
+        0.0742,
+        0.0476
+      ],
+      "moving_average": [
+        1.7833,
+        0.4694,
+        0.7644,
+        0.7742,
+        0.6195,
+        0.797,
+        0.3104,
+        0.6008
+      ]
+    }
+  },
+  "classification": {
+    "experiment": "B \u2014 Classification Improvement",
+    "setting": "Cross-subject pooled, 5-fold stratified CV",
+    "downstream_model": "Logistic Regression (no population scaler)",
+    "n_subjects": 8,
+    "n_sessions": 40,
+    "mean_accuracy": {
+      "raw": 0.6031,
+      "zscore": 0.8375,
+      "coral": 0.6031,
+      "moving_average": 0.7312
+    },
+    "mean_f1": {
+      "raw": 0.5729,
+      "zscore": 0.8322,
+      "coral": 0.5729,
+      "moving_average": 0.7336
+    },
+    "mean_improvement_pct": {
+      "zscore": 23.44,
+      "coral": 0.0,
+      "moving_average": 12.81
+    },
+    "per_subject": [
+      {
+        "subject_id": "S01",
+        "archetype": "subject_A"
+      },
+      {
+        "subject_id": "S02",
+        "archetype": "subject_B"
+      },
+      {
+        "subject_id": "S03",
+        "archetype": "subject_C"
+      },
+      {
+        "subject_id": "S04",
+        "archetype": "subject_A"
+      },
+      {
+        "subject_id": "S05",
+        "archetype": "subject_B"
+      },
+      {
+        "subject_id": "S06",
+        "archetype": "subject_C"
+      },
+      {
+        "subject_id": "S07",
+        "archetype": "subject_A"
+      },
+      {
+        "subject_id": "S08",
+        "archetype": "subject_B"
+      }
+    ],
+    "chart_data": {
+      "methods": [
+        "raw",
+        "zscore",
+        "coral",
+        "moving_average"
+      ],
+      "accuracy": [
+        0.6031,
+        0.8375,
+        0.6031,
+        0.7312
+      ],
+      "f1": [
+        0.5729,
+        0.8322,
+        0.5729,
+        0.7336
+      ]
+    }
+  },
+  "calibration": {
+    "experiment": "C \u2014 Calibration Efficiency",
+    "metric": "Variance of Mahalanobis D(x) across stable test sessions",
+    "n_subjects": 6,
+    "n_sessions": 50,
+    "calib_steps": [
+      5,
+      7,
+      10,
+      15,
+      20,
+      25,
+      30
+    ],
+    "curves": {
+      "calib_sessions": [
+        5,
+        7,
+        10,
+        15,
+        20,
+        25,
+        30
+      ],
+      "variance_raw": [
+        9523.7455,
+        1264.7809,
+        6.1434,
+        1.9955,
+        0.9088,
+        0.867,
+        0.795
+      ],
+      "variance_aligned": [
+        3.6091,
+        1.3167,
+        0.8691,
+        0.6955,
+        0.612,
+        0.5928,
+        0.5863
+      ],
+      "variance_reduction_pct": [
+        99.96,
+        99.9,
+        85.85,
+        65.15,
+        32.66,
+        31.63,
+        26.25
+      ]
+    },
+    "plateau_n": 10,
+    "key_finding": "Aligned deviation variance stabilizes near 10 calibration sessions. Raw Mahalanobis scoring is 9523.7\u00d7 more variable than aligned scoring at minimum calibration (5 sessions). At full calibration (30 sessions), alignment still reduces variance by 26.2%."
+  },
+  "failure": {
+    "experiment": "D \u2014 Failure Analysis",
+    "metric": "Variance of Mahalanobis D(x) across test sessions",
+    "n_subjects": 6,
+    "scenarios": [
+      {
+        "scenario": "Normal conditions",
+        "mean_reduction_pct": 43.02,
+        "std_reduction_pct": 26.82,
+        "failure_rate": 0.0,
+        "noise_level": 0.1,
+        "abrupt_drift": false,
+        "n_calib_sessions": 15
+      },
+      {
+        "scenario": "High noise (\u03c3\u00d73)",
+        "mean_reduction_pct": 43.03,
+        "std_reduction_pct": 26.83,
+        "failure_rate": 0.0,
+        "noise_level": 0.3,
+        "abrupt_drift": false,
+        "n_calib_sessions": 15
+      },
+      {
+        "scenario": "Very high noise (\u03c3\u00d76)",
+        "mean_reduction_pct": 44.71,
+        "std_reduction_pct": 24.6,
+        "failure_rate": 0.0,
+        "noise_level": 0.6,
+        "abrupt_drift": false,
+        "n_calib_sessions": 15
+      },
+      {
+        "scenario": "Abrupt drift",
+        "mean_reduction_pct": 28.47,
+        "std_reduction_pct": 33.82,
+        "failure_rate": 0.333,
+        "noise_level": 0.1,
+        "abrupt_drift": true,
+        "n_calib_sessions": 15
+      },
+      {
+        "scenario": "Few calibration (3)",
+        "mean_reduction_pct": 0.0,
+        "std_reduction_pct": 0.0,
+        "failure_rate": 1.0,
+        "noise_level": 0.1,
+        "abrupt_drift": false,
+        "n_calib_sessions": 3
+      },
+      {
+        "scenario": "Few calibration (5)",
+        "mean_reduction_pct": 99.93,
+        "std_reduction_pct": 0.09,
+        "failure_rate": 0.0,
+        "noise_level": 0.1,
+        "abrupt_drift": false,
+        "n_calib_sessions": 5
+      }
+    ],
+    "key_findings": [
+      "Performance degrades gracefully with noise; complete failure is rare.",
+      "Abrupt drift is the most challenging condition for static baselines.",
+      "Fewer than 5 calibration sessions introduces high variance in results.",
+      "Moving-average adaptation handles slow drift better than static alignment."
+    ],
+    "chart_data": {
+      "scenario_names": [
+        "Normal conditions",
+        "High noise (\u03c3\u00d73)",
+        "Very high noise (\u03c3\u00d76)",
+        "Abrupt drift",
+        "Few calibration (3)",
+        "Few calibration (5)"
+      ],
+      "mean_reductions": [
+        43.02,
+        43.03,
+        44.71,
+        28.47,
+        0.0,
+        99.93
+      ],
+      "failure_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.333,
+        1.0,
+        0.0
+      ]
+    }
+  }
+}
