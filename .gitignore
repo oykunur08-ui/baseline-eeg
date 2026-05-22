@@ -1,2 +1,47 @@
-node_modules
-node_modules
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+
+# Node
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Data / ML artifacts
+data/
+datasets/
+models/
+checkpoints/
+*.npy
+*.npz
+*.pt
+*.pth
+*.edf
+*.fif
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

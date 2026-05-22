@@ -1,0 +1,39 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Node
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Environment files
+.env
+
+# Mac
+.DS_Store
+
+# Data + models
+data/
+datasets/
+models/
+checkpoints/
+
+# EEG files
+*.edf
+*.fif
+
+# ML artifacts
+*.npy
+*.npz
+*.pt
+*.pth
+
+# Logs
+*.log
