@@ -2,215 +2,389 @@
 
 > *Neural signals only become meaningful when interpreted relative to themselves.*
 
-**Baseline** is a lightweight personalization and representation-alignment layer for wearable EEG systems operating under longitudinal drift, low-channel constraints, noisy preprocessing, and limited calibration conditions.
+Wearable EEG systems drift across time, making neural models unstable across sessions, environments, and users.
+
+BASELINE explores whether lightweight subject-specific statistical alignment can stabilize EEG feature representations under realistic wearable deployment constraints.
+
+Rather than building a new classifier architecture, BASELINE investigates a more fundamental question:
+
+> Can longitudinal personalization improve robustness in non-stationary neural systems?
 
 ---
 
-## What this is
+# Why This Matters
 
-Baseline investigates whether lightweight subject-specific representation alignment can improve stability, calibration efficiency, and downstream model performance in wearable EEG systems under real-world deployment constraints.
+Most machine learning systems assume humans are statistically stable.
 
-This is **not**: a classifier, a diagnostic tool, a mental health application, or a production system.
+Brains are not.
 
-This **is**: a research-grade infrastructure concept, a modular domain adaptation layer for EEG pipelines, and a deployment-oriented alternative to population-level modeling.
+Neural activity changes continuously across:
+- fatigue
+- sleep
+- stress
+- attention
+- learning
+- environment
+- electrode placement
+- time
+
+This becomes a major problem for wearable neurotechnology.
+
+EEG systems that perform well in controlled laboratory settings often degrade rapidly in real-world deployment because neural feature distributions drift longitudinally.
+
+Future neurotechnology systems — from wearable EEG to brain-computer interfaces — will require adaptive personalization layers capable of tracking evolving neural distributions over time.
+
+BASELINE explores one small piece of that problem.
 
 ---
 
-## The problem
+# The Problem
 
 | Problem | Consequence |
 |---|---|
-| **Inter-subject variability** | Population models are biased against everyone they claim to represent |
-| **Longitudinal drift** | Static calibrations become unreliable within sessions |
-| **Wearable constraints** | 2–4 channels; no gel; noisy preprocessing |
-| **Limited calibration** | Users will not endure 30-minute calibration protocols |
+| Inter-subject variability | Population models generalize poorly |
+| Longitudinal drift | Calibration degrades across sessions |
+| Wearable constraints | Low-channel EEG becomes unstable |
+| Limited calibration | Long setup procedures are impractical |
+| Nonstationarity | Neural feature distributions continuously shift |
 
 ---
 
-## Architecture
+# Core Hypothesis
 
-```
-Raw EEG features
-      │
-      ▼
-┌─────────────────────────────┐
-│       BASELINE LAYER        │
-│  1. Baseline learning       │   μ, Σ = fit(X_calib)
-│  2. Embedding alignment     │   z = Σ⁻¹/² (x − μ)
-│  3. Longitudinal adaptation │   μₜ = (1−α)μₜ₋₁ + αxₜ
-└─────────────────────────────┘
-      │
-      ▼
-Aligned embedding z → Downstream classifier f(z)
-```
+> Subject-specific covariance alignment can partially stabilize EEG feature distributions across sessions without requiring retraining of downstream models.
 
-Baseline is a **drop-in layer** — no changes to downstream model architecture required.
+BASELINE operates as a lightweight alignment layer between EEG features and downstream machine learning systems.
 
 ---
 
-## Project structure
+# System Overview
 
+```text
+Raw EEG
+   │
+   ▼
+Feature Extraction
+(bandpower, variance, spectral metrics)
+   │
+   ▼
+┌─────────────────────────────────┐
+│         BASELINE LAYER          │
+│                                 │
+│  1. Baseline estimation         │
+│     μ, Σ = fit(X_calibration)   │
+│                                 │
+│  2. Covariance normalization    │
+│     z = Σ⁻¹/² (x − μ)           │
+│                                 │
+│  3. Longitudinal adaptation     │
+│     μₜ = (1−α)μₜ₋₁ + αxₜ        │
+└─────────────────────────────────┘
+   │
+   ▼
+Aligned feature representation
+   │
+   ▼
+Downstream classifier
 ```
+
+---
+
+# Interactive Research Labs
+
+BASELINE is designed as an interactive research system rather than a static paper.
+
+---
+
+## 1. Drift Geometry Lab
+
+Visualize how EEG feature distributions drift across sessions.
+
+Compare:
+- raw feature embeddings
+- covariance-aligned embeddings
+- session geometry over time
+
+Explore:
+- drift intensity
+- noise
+- session count
+- alignment methods
+
+Key question:
+
+> Does statistical alignment stabilize neural geometry?
+
+---
+
+## 2. Calibration Efficiency Simulator
+
+Investigate how personalization affects calibration burden.
+
+Compare:
+- raw pipeline performance
+- aligned pipeline performance
+
+Across:
+- small calibration sets
+- noisy wearable conditions
+- longitudinal drift scenarios
+
+Key question:
+
+> Can personalization reduce calibration requirements?
+
+---
+
+## 3. Longitudinal Feature Viewer
+
+Track synthetic EEG feature trajectories across simulated sessions.
+
+Observe:
+- alpha drift
+- beta instability
+- variance expansion
+- adaptation behavior
+
+Visualize how BASELINE tracks evolving neural distributions over time.
+
+---
+
+## 4. Personal Drift Experience
+
+A lightweight interactive experiment demonstrating neural instability.
+
+Users complete:
+- a short reaction-time task
+- multiple simulated sessions
+- drift/noise perturbations
+
+The system then visualizes:
+- how feature distributions shift across sessions
+- how identical users can appear statistically different over time
+- how alignment stabilizes representation geometry
+
+The goal is not diagnosis.
+
+The goal is experiential understanding:
+> future neural systems cannot assume humans are statistically static.
+
+---
+
+# Central Finding
+
+Evaluated on real EEG data from BNCI Horizon 2020 (dataset 001-2014).
+
+### Experimental Setup
+
+- Subject: A01
+- Train session: A01T
+- Test session: A01E
+- Task: Binary motor imagery
+- Channels: C3, C4, CP3, CP4
+- Features:
+  - theta power
+  - alpha power
+  - beta power
+  - temporal variance
+- Classifier: Logistic Regression
+
+### Results
+
+| Method | Feature Shift (L₂) | Accuracy |
+|---|---|---|
+| Raw | 4.06 | 57.6% |
+| Covariance Whitening | 0.22 | 57.6% |
+| Moving Adaptation | 0.55 | 51.4% |
+
+Covariance normalization substantially reduced longitudinal feature instability:
+
+> 4.06 → 0.22 (−94.6%)
+
+However:
+- reduced drift did not improve decoding accuracy
+- stability and discriminative information may be partially decoupled
+
+This became the central research insight of the project.
+
+---
+
+# What BASELINE Suggests
+
+BASELINE does not claim to solve EEG decoding.
+
+Instead, it suggests that:
+
+- longitudinal adaptation may be necessary for future neurotechnology systems
+- statistical stability alone may not guarantee decoding robustness
+- wearable EEG deployment requires personalization-aware infrastructure
+- future human-centered AI systems may require adaptive representations rather than static user models
+
+---
+
+# Drift Geometry
+
+One of the central ideas explored in BASELINE is that neural feature geometry changes across time.
+
+Without adaptation:
+- session distributions separate
+- embeddings drift
+- calibration degrades
+- decision boundaries destabilize
+
+With alignment:
+- feature distributions contract
+- session geometry stabilizes
+- longitudinal variance decreases
+
+Yet:
+- improved statistical stability does not necessarily imply improved decoding performance
+
+This dissociation is one of the most important findings in the project.
+
+---
+
+# Research Positioning
+
+BASELINE sits at the intersection of:
+
+- longitudinal representation learning
+- domain adaptation
+- non-stationary biosignal processing
+- wearable EEG deployment
+- calibration-efficient BCI systems
+- adaptive human-centered AI
+
+---
+
+# Technical Stack
+
+## Frontend
+- Next.js
+- React
+- TypeScript
+- Plotly.js
+- TailwindCSS
+- Framer Motion
+
+## Backend
+- Python
+- NumPy
+- SciPy
+- Scikit-learn
+- MNE
+
+## Core Methods
+- covariance whitening
+- z-score normalization
+- moving-average adaptation
+- synthetic longitudinal drift simulation
+- PCA / t-SNE embedding analysis
+
+---
+
+# Repository Structure
+
+```text
 baseline/
-├── api/                    # FastAPI backend
-│   ├── main.py
-│   └── routes/             # baseline, experiments, data
-├── sdk/
-│   └── client.py           # Baseline SDK class
 ├── adaptation/
-│   ├── z_score.py          # Per-feature z-score normalization
-│   ├── coral.py            # CORAL covariance alignment
-│   └── moving_average.py   # Exponential MA recalibration
 ├── evaluation/
-│   ├── stability.py        # Exp A: variance reduction
-│   ├── classification.py   # Exp B: classifier improvement
-│   ├── calibration.py      # Exp C: calibration efficiency
-│   └── failure.py          # Exp D: failure analysis
 ├── experiments/
-│   └── run_all.py          # CLI experiment runner
-├── core/                   # Statistical baseline engine
-├── frontend/               # Next.js 15 cinematic UI
-│   ├── app/page.tsx        # Main scrolling experience
-│   └── app/demo/page.tsx   # Live experiment runner
-├── config.py
-├── requirements.txt
-└── docker-compose.yml
+├── features/
+├── frontend/
+├── sdk/
+├── synthetic/
+├── visualization/
+├── app.py
+└── config.py
 ```
 
 ---
 
-## Alignment strategies
+# Design Philosophy
 
-| Method | Description | Best for |
-|---|---|---|
-| **Z-score** | Per-feature normalization using personal μ, σ | Fast, interpretable, online |
-| **CORAL** | Covariance alignment to baseline Σ | Session-level covariance shift |
-| **Moving Average** | EMA recalibration tracking slow drift | Gradual longitudinal drift |
+BASELINE is intentionally designed as:
+- a research visualization system
+- an interactive computational neuroscience prototype
+- a deployment-oriented investigation
 
----
+It is not:
+- a wellness product
+- a cognitive enhancement platform
+- a medical system
+- a “brain AI” application
 
-## Experiment results (synthetic data)
-
-### A — Session Variance Reduction
-```
-Mahalanobis D(x) variance reduction (stable sessions):
-  zscore         +34.1%
-  coral          +96.4%
-  moving_average +22.5%
-```
-
-### B — Classification Improvement (cross-subject pooled)
-```
-Baseline accuracy (raw): 60.3%
-  zscore         +23.4pp
-  moving_average +12.8pp
-  coral          +0.0pp   (covariance alignment ≈ identity on same-distribution data)
-```
-
-### C — Calibration Efficiency
-```
-Aligned deviation variance stabilizes at ~10 calibration sessions.
-Raw Mahalanobis scoring is >9500× more variable than aligned at 5 sessions.
-```
-
-### D — Failure Analysis
-```
-Normal conditions:       +43.0% reduction, 0% failure
-High noise (σ×3):        +43.0% reduction, 0% failure
-Very high noise (σ×6):   +44.7% reduction, 0% failure
-Abrupt drift:            +28.5% reduction, 33% failure
-Few calibration (3):      +0.0% reduction, 100% failure (below MIN_SESSIONS)
-Few calibration (5):     +99.9% reduction, 0% failure
-```
+The project prioritizes:
+- scientific clarity
+- longitudinal realism
+- interpretability
+- deployment constraints
+- adaptive personalization
 
 ---
 
-## SDK usage
+# Limitations
 
-```python
-from sdk import Baseline
+- Single-subject real-data evaluation
+- Limited wearable simulation
+- No deep representation learning
+- Small-scale adaptation methods
+- Research prototype only
 
-bl = Baseline(adapter="zscore")    # or "coral", "moving_average"
-
-# Fit on calibration sessions
-bl.fit("alice", calibration_df)
-
-# Transform new session
-result = bl.transform("alice", new_session_vector)
-print(result.mahal_distance)       # 1.24
-print(result.deviation_label)      # "mild"
-
-# Evaluate alignment quality
-report = bl.evaluate("alice")
-print(report.variance_reduction)   # 42.1%
-
-# Per-session reliability
-reliabilities = bl.get_session_reliability("alice")
-```
+BASELINE is not:
+- a medical device
+- a diagnostic system
+- a cognitive assessment tool
 
 ---
 
-## Running locally
+# Future Directions
 
-```bash
-# Backend
-pip install -r requirements.txt
-uvicorn api.main:app --reload --port 8000
+BASELINE currently explores lightweight statistical alignment under constrained wearable EEG conditions.
 
-# Run all experiments
-python -m experiments.run_all
+Longer-term, this work points toward a broader question:
 
-# Frontend
-cd frontend && npm install && npm run dev
+> How should future neurotechnology systems adapt to humans as continuously evolving biological distributions rather than static users?
 
-# Docker (full stack)
-cp .env.example .env && docker-compose up --build
+Potential future directions include:
+
+## Continuous Neural Adaptation
+Systems capable of updating personal neural representations longitudinally without requiring explicit recalibration sessions.
+
+## Calibration-Light Wearable Neurotechnology
+Wearable EEG systems designed around passive adaptation and minimal user burden.
+
+## Persistent Personal Neural Embeddings
+Long-term subject-specific neural representation spaces capable of tracking gradual cognitive and physiological change across months or years.
+
+## Uncertainty-Aware Neural Interfaces
+Adaptive systems that estimate signal reliability, confidence, and drift in real time under noisy real-world conditions.
+
+## Hardware / Software Co-Design
+Wearable neurotechnology designed jointly with adaptive alignment infrastructure rather than treating signal instability purely as a post-processing problem.
+
+## Federated Personalization
+Privacy-preserving personalization systems allowing wearable neural devices to improve longitudinally without centralized storage of raw neural data.
+
+## Toward Adaptive Human-Centered AI
+More broadly, BASELINE explores whether future AI systems interacting with biological humans may require temporally adaptive representations rather than static assumptions about users.
+
+---
+
+# Citation
+
+```bibtex
+@misc{kesek2026baseline,
+  title={BASELINE: Lightweight Subject-Specific Feature Alignment for Longitudinal Wearable EEG},
+  author={Kesek, Oyku Nur},
+  year={2026}
+}
 ```
 
 ---
 
-## API reference
+# Final Thought
 
-| Endpoint | Method | Description |
-|---|---|---|
-| `/api/baseline/fit` | POST | Fit baseline for a user |
-| `/api/baseline/transform` | POST | Transform + score a session |
-| `/api/baseline/profile/{user_id}` | GET | Profile + drift history |
-| `/api/data/generate-synthetic` | POST | Generate synthetic subjects |
-| `/api/experiments/stability` | GET | Run Experiment A |
-| `/api/experiments/classification` | GET | Run Experiment B |
-| `/api/experiments/calibration` | GET | Run Experiment C |
-| `/api/experiments/failure` | GET | Run Experiment D |
-| `/api/experiments/all` | GET | Run all |
+Future neural systems cannot assume humans are static distributions.
 
----
-
-## Limitations
-
-1. **Synthetic validation only** — no real device testing; results are proof-of-concept
-2. **Linear alignment** — CORAL and z-score do not capture non-linear drift
-3. **Static CORAL** — online mode reduces to z-score when no batch data is available
-4. **Noise sensitivity** — performance degrades significantly above σ > 0.30
-5. **Min calibration** — needs ≥ 5 sessions; performance improves until ~10
-
----
-
-## Future directions
-
-- Riemannian manifold alignment for SPD matrices
-- Online Bayesian uncertainty quantification
-- Multi-device cross-session validation with real hardware
-- Federated personal baseline learning
-- Integration with OpenBCI, Muse, and EMOTIV SDKs
-
----
-
-## What Baseline does not claim
-
-Deviation scores are statistical distances, not clinical indicators.
-Labels (stable / mild / moderate / high) are relative to individual history only.
-This is not a medical device.
-
----
-
-*Research prototype · 2025*
+BASELINE explores what happens when machine learning systems begin adapting to the temporal instability of real human signals.

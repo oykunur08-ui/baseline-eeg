@@ -1,21 +1,22 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import clsx from "clsx";
 
 const CHAPTERS = [
-  { id: "problem",     label: "The Problem" },
-  { id: "theory",      label: "Theory" },
+  { id: "problem",     label: "Problem" },
+  { id: "theory",      label: "Framework" },
   { id: "experiments", label: "Experiments" },
-  { id: "demo",        label: "Live Demo" },
+  { id: "lab",         label: "Lab" },
+  { id: "about",       label: "Researcher" },
+  { id: "paper",       label: "Paper" },
   { id: "notes",       label: "Notes" },
 ];
 
 export default function Nav() {
-  const [scrolled, setScrolled]   = useState(false);
-  const [menuOpen, setMenuOpen]   = useState(false);
-  const [active, setActive]       = useState("");
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [active, setActive]     = useState("");
 
   useEffect(() => {
     const onScroll = () => {
@@ -75,15 +76,15 @@ export default function Nav() {
             ))}
           </div>
 
-          {/* CTA */}
+          {/* Lab CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <Link
-              href="/demo"
+            <button
+              onClick={() => scrollTo("lab")}
               className="text-xs font-semibold px-4 py-1.5 border border-ink/20 rounded-full
                          hover:bg-ink hover:text-parchment transition-all duration-200"
             >
-              Open Demo →
-            </Link>
+              Interactive Lab →
+            </button>
           </div>
 
           {/* Mobile hamburger */}
@@ -117,9 +118,12 @@ export default function Nav() {
                 {label}
               </button>
             ))}
-            <Link href="/demo" className="text-sm font-semibold text-teal mt-4">
-              Open Live Demo →
-            </Link>
+            <button
+              onClick={() => scrollTo("lab")}
+              className="text-sm font-semibold text-teal mt-4 text-left"
+            >
+              Interactive Lab →
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

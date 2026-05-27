@@ -5,39 +5,62 @@ import SectionLabel from "../ui/SectionLabel";
 const NOTES = [
   {
     id: "N01",
-    title: "On the validity of synthetic evaluation",
-    body: "All experiments use simulated EEG data with parametric inter-subject variability and longitudinal drift. Synthetic evaluation is a necessary first step — results should be interpreted as proof-of-concept, not deployment-ready performance metrics. Real-device validation requires hardware access and ethical approval.",
+    title: "On the scope of this evaluation",
+    body: "Experiments use real EEG data from BNCI Horizon 2020 (001-2014), single subject A01, evaluated across two sessions (A01T to A01E). Single-subject evaluation is a known limitation. The observed drift reduction may not generalize across subjects, devices, or tasks. These results are proof-of-concept, not deployment-ready benchmarks.",
   },
   {
     id: "N02",
     title: "Method limitations",
-    body: "Static CORAL alignment assumes source and target session covariance are estimable from available data. In single-session online deployment, this reduces to z-score normalization. Moving-average adaptation can over-fit to rare transient states if the EMA decay is too aggressive.",
+    body: "Covariance whitening assumes the training session covariance is representative of the long-run statistic. In practice, a single session may under-sample the distribution. Moving-average adaptation can over-fit to short-term transient states if the decay rate is too aggressive relative to the actual drift timescale.",
   },
   {
     id: "N03",
     title: "What this system does not claim",
-    body: "Baseline is not a classifier. It makes no clinical claims about cognitive state, mental health, or neurological function. Deviation scores are statistical distances from an individual's own history — not diagnoses.",
+    body: "Baseline is not a classifier. It makes no clinical claims about cognitive state, mental health, or neurological function. The dissociation between feature stability and decoding accuracy observed here should be interpreted as a constraint on what statistical alignment alone can provide.",
   },
   {
     id: "N04",
     title: "Open questions",
-    body: "Can Riemannian geometry-based alignment outperform covariance normalization on real-world wearable data? How does session length interact with baseline stability? What is the minimum viable calibration protocol for BCI deployment?",
+    body: "Why did covariance whitening fail to improve accuracy despite 94.6% drift reduction? Is the discriminative signal for motor imagery orthogonal to the high-variance drift directions? Can Riemannian alignment outperform covariance whitening on multi-subject longitudinal evaluation? What is the minimum viable calibration protocol for wearable BCI deployment?",
   },
 ];
 
 const FUTURE = [
-  "Riemannian manifold alignment comparison",
-  "Online uncertainty quantification",
-  "Multi-device cross-session validation",
-  "Federated personal baseline learning",
-  "Integration with real wearable EEG SDKs",
+  {
+    title: "Continuous adaptation without recalibration",
+    body: "Systems capable of updating personal neural representations longitudinally without requiring explicit recalibration sessions — treating alignment as a persistent background process rather than an upfront cost.",
+  },
+  {
+    title: "Calibration-light wearable neurotechnology",
+    body: "Wearable EEG systems designed around passive adaptation and minimal user burden. Practical deployment imposes hard constraints on setup time; the alignment layer should absorb longitudinal variation silently.",
+  },
+  {
+    title: "Persistent personal neural embeddings",
+    body: "Long-term subject-specific representation spaces capable of tracking gradual cognitive and physiological change across months or years. Whether such embeddings remain discriminative at that timescale is an open empirical question.",
+  },
+  {
+    title: "Uncertainty-aware neural interfaces",
+    body: "Adaptive systems that estimate signal reliability and drift in real time, flagging when alignment has degraded rather than silently producing uncertain predictions under noisy real-world conditions.",
+  },
+  {
+    title: "Hardware and software co-design",
+    body: "Wearable neurotechnology designed jointly with adaptive alignment infrastructure, rather than treating signal instability purely as a post-processing residual. Electrode placement, signal conditioning, and adaptation as a unified system.",
+  },
+  {
+    title: "Federated personalization",
+    body: "Privacy-preserving personalization allowing wearable neural devices to improve longitudinally without centralized storage of raw neural data — a necessary constraint for any deployment at population scale.",
+  },
+  {
+    title: "Adaptive human-centered AI",
+    body: "Whether future AI systems interacting with biological users require temporally adaptive representations rather than fixed assumptions about users. BASELINE examines one constrained, measurable piece of that larger question.",
+  },
 ];
 
 export default function ResearchNotes() {
   return (
     <section id="notes" className="bg-parchment py-section border-t border-stone">
       <div className="container-wide">
-        <SectionLabel className="mb-6">Chapter 05 — Research Notes</SectionLabel>
+        <SectionLabel className="mb-6">Chapter 07. Research Notes</SectionLabel>
 
         <div className="flex flex-col md:flex-row gap-16 mb-16">
           <div className="md:w-1/2">
@@ -60,8 +83,8 @@ export default function ResearchNotes() {
               className="text-sm text-mist leading-relaxed"
             >
               Research-grade work requires honest accounting of its boundaries.
-              These notes document where Baseline's assumptions hold and where
-              they break down.
+              These notes document where Baseline's assumptions hold, where
+              they break down, and what the real evaluation revealed.
             </motion.p>
           </div>
         </div>
@@ -90,25 +113,29 @@ export default function ResearchNotes() {
           <div className="md:w-2/5">
             <h3 className="text-title text-ink mb-4">Future directions</h3>
             <p className="text-sm text-mist leading-relaxed">
-              The current system establishes baseline methodology. Extensions
-              in Riemannian geometry and federated learning represent the most
-              promising next directions for real-world deployment.
+              The current evaluation establishes a methodological baseline.
+              The deeper question it opens: how should future neurotechnology
+              systems adapt to humans as continuously evolving biological
+              distributions rather than static users?
             </p>
           </div>
           <div className="md:w-3/5 space-y-3">
             {FUTURE.map((item, i) => (
               <motion.div
-                key={item}
+                key={item.title}
                 initial={{ opacity: 0, x: 16 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.6 }}
-                className="flex items-center gap-4 py-3 border-b border-stone last:border-0"
+                className="flex items-start gap-4 py-4 border-b border-stone last:border-0"
               >
-                <span className="text-xs font-mono text-mist/50 w-6">
+                <span className="text-xs font-mono text-mist/50 w-6 mt-0.5 flex-shrink-0">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="text-sm text-dim">{item}</span>
+                <div>
+                  <div className="text-sm text-dim mb-1.5">{item.title}</div>
+                  <p className="text-xs text-mist leading-relaxed">{item.body}</p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -120,7 +147,7 @@ export default function ResearchNotes() {
           <div>
             <div className="text-sm font-semibold text-ink mb-1">BASELINE</div>
             <div className="text-xs text-mist">
-              EEG Representation Alignment · Research Prototype · 2025
+              EEG Feature Alignment · Research Prototype · 2026
             </div>
           </div>
           <div className="text-xs text-mist max-w-sm text-right leading-relaxed">

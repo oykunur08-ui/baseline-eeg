@@ -40,26 +40,26 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 24 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 export default function Problem() {
   return (
-    <section id="problem" className="bg-dark-bg text-parchment py-section">
+    <section id="problem" className="bg-linen py-section">
       <div className="container-wide">
         <div className="flex flex-col md:flex-row gap-16">
           {/* Left column */}
           <div className="md:w-2/5 flex flex-col justify-between">
             <div>
-              <SectionLabel light className="mb-6">
-                Chapter 01 — The Problem
+              <SectionLabel className="mb-6">
+                Chapter 01. The Problem
               </SectionLabel>
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="headline text-parchment mb-8"
+                className="headline text-ink mb-8"
               >
                 Why EEG fails in the wild
               </motion.h2>
@@ -68,7 +68,7 @@ export default function Problem() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2, duration: 0.8 }}
-                className="text-sm text-parchment/60 leading-relaxed max-w-sm"
+                className="text-sm text-mist leading-relaxed max-w-sm"
               >
                 Most EEG research optimizes for benchmark accuracy on controlled lab datasets.
                 Deployment reveals the gap between academic performance and real-world robustness.
@@ -80,12 +80,12 @@ export default function Problem() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="mt-12 p-6 border border-dark-border rounded-xl"
+              className="mt-12 p-6 border border-stone rounded-xl"
             >
-              <div className="text-xs text-parchment/50 mb-2">Core hypothesis</div>
-              <p className="text-sm text-parchment/80 leading-relaxed font-light italic">
-                "Subject-specific embedding alignment can partially offset distribution shift
-                without requiring retraining of downstream models."
+              <div className="text-xs text-mist mb-2">Core hypothesis</div>
+              <p className="text-sm text-dim leading-relaxed font-light italic">
+                "Subject-specific covariance normalization can partially stabilize feature
+                distributions across sessions without requiring retraining of downstream models."
               </p>
             </motion.div>
           </div>
@@ -103,13 +103,13 @@ export default function Problem() {
                 <motion.div
                   key={p.id}
                   variants={item}
-                  className="p-6 border border-dark-border rounded-xl bg-dark-surface
-                             hover:border-dark-muted/40 transition-colors duration-300 group"
+                  className="p-6 border border-stone rounded-xl bg-parchment
+                             hover:border-dim/20 transition-colors duration-300 group"
                 >
-                  <div className="text-xs text-parchment/40 font-mono mb-4">{p.id}</div>
-                  <h3 className="text-sm font-semibold text-parchment mb-3">{p.title}</h3>
-                  <p className="text-xs text-parchment/60 leading-relaxed mb-4">{p.body}</p>
-                  <div className="text-xs font-mono text-teal pt-3 border-t border-dark-border">
+                  <div className="text-xs text-mist font-mono mb-4">{p.id}</div>
+                  <h3 className="text-sm font-semibold text-ink mb-3">{p.title}</h3>
+                  <p className="text-xs text-mist leading-relaxed mb-4">{p.body}</p>
+                  <div className="text-xs font-mono text-teal pt-3 border-t border-stone">
                     {p.metric}
                   </div>
                 </motion.div>
