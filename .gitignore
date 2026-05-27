@@ -45,3 +45,4 @@ checkpoints/
 # IDE
 .vscode/
 .idea/
+.vercel
