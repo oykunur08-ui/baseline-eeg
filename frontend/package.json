@@ -9,14 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "15.1.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.5.4",
+    "gsap": "^3.12.5",
+    "next": "^15.1.0",
+    "plotly.js-dist-min": "^2.35.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "framer-motion": "^11.5.4",
-    "plotly.js-dist-min": "^2.35.2",
-    "react-plotly.js": "^2.6.0",
-    "gsap": "^3.12.5",
-    "clsx": "^2.1.1"
+    "react-plotly.js": "^2.6.0"
   },
   "devDependencies": {
     "@types/node": "^20",
