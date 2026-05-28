@@ -79,11 +79,11 @@ const SECTIONS: Section[] = [
     blocks: [
       {
         type: "para",
-        text: "Psychological stress is a growing public health concern, and its objective measurement through physiological signals has attracted significant research attention. Electroencephalography (EEG) is exceptionally effective for identifying stress as it detects the cognitive aspects of stress prior to the emergence of peripheral reactions like variations in heart rate or changes in skin conductance [1]. Consumer EEG wearables have made ambulatory brain monitoring increasingly accessible, yet two fundamental problems prevent reliable deployment.",
+        text: "Psychological stress is a growing public health concern, and its objective measurement through physiological signals has attracted significant research attention. Electroencephalography (EEG) is an effective tool for identifying stress as it detects the cognitive aspects of stress prior to the emergence of peripheral reactions such as changes in heart rate or changes in skin conductance [1]. Even though EEG wearables have made ambulatory brain monitoring increasingly accessible, two fundamental problems prevent reliable deployment.",
       },
       {
         type: "para",
-        text: "To begin with, inter-subject variability: resting alpha power, peak frequency, and spectral distributions vary significantly among individuals [1, 2]. Population classifiers trained on averaged patterns across many subjects learn a mean that may not represent any individual accurately, causing systematic misclassification in subjects whose baseline deviates from the group mean. Second, the electrode constraint: devices such as the Emotiv MN8 and Muse S use only two behind-ear electrodes at temporal positions T7 and T8. Detection algorithms developed on 32-channel laboratory systems do not specify how much performance degrades under this constraint.",
+        text: "First is the inter-subject variability: resting alpha power, peak frequency, and spectral distributions vary significantly among individuals [1, 2]. Population classifiers trained on averaged patterns across many subjects learn a mean that may not represent any individual accurately, causing systematic misclassification in subjects whose baseline deviates from the group mean. Second, the electrode constraint: devices such as the Emotiv MN8 and use only two electrodes. Specifically, Emotiv MN8 uses electrodes that are behind the ear at temporal positions T7 and T8. Detection algorithms developed for 32-channel laboratory systems, however, do not indicate the extent to which performance deteriorates under this constraint.",
       },
       {
         type: "para",
@@ -97,11 +97,7 @@ const SECTIONS: Section[] = [
     blocks: [
       {
         type: "para",
-        text: "Inter-subject EEG variability is documented as the primary obstacle to cross-subject generalisation [1, 2]. Domain adaptation, transfer learning, and normalisation approaches have been proposed as solutions [2, 3]; Fdez et al. [3] demonstrated that standard batch normalisation fails when subjects differ systematically in baseline distributions, which supported the per-subject calibration as a practical alternative. Alpha band suppression (8–13 Hz) is the most consistently reported EEG stress correlate [4, 5]: Packheiser et al. [6] found significant frontal alpha asymmetry changes during TSST-induced stress in 51 healthy adults, and Schapkin et al. [4] identified alpha reduction as the most sensitive indicator of cognitive load.",
-      },
-      {
-        type: "para",
-        text: "In-ear EEG signals correlate significantly with scalp EEG at T7/T8 positions [7, 8], validating T7/T8 extraction as a methodologically sound simulation of behind-ear wearables, though with the upper-bound caveat detailed in Section 3.2. A 2025 systematic review of 39 low-cost EEG stress studies confirmed alpha suppression as the dominant biomarker and noted that no reviewed study released source code [9], motivating the open-source pipeline presented here. Instead of trying to outperform state-of-the-art cross-subject deep learning systems, this study asks whether a zero-label, subject-specific baseline can match or surpass the practical performance of a supervised cross-subject classifier under wearable EEG constraints, which is a more deployment-focused question.",
+        text: "Inter-subject EEG variability is documented as the primary obstacle to cross-subject generalisation [1, 2]. Domain adaptation, transfer learning, and normalisation approaches have been proposed as solutions [2, 3]; Fdez et al. [3] demonstrated that standard batch normalisation fails when subjects differ systematically in their baseline distributions, thereby supporting per-subject calibration as a practical alternative. Alpha band suppression (8-13 Hz) is the most consistently reported EEG stress correlate [4, 5]: Packheiser et al. [6] found significant frontal alpha asymmetry changes during TSST-induced stress in 51 healthy adults, and Schapkin et al. [4] identified alpha reduction as the most sensitive indicator of cognitive load. In-ear EEG signals correlate significantly with scalp EEG at T7/T8 positions [7, 8], validating T7/T8 extraction as a methodologically sound simulation of behind-ear wearables, though with the upper-bound caveat detailed in Section 3.2. A 2025 systematic review of 39 low-cost EEG stress studies confirmed alpha suppression as the dominant biomarker and noted that no reviewed study released source code [9], motivating the open-source pipeline presented here. This study asks whether a zero-label, subject-specific baseline can match or surpass the practical performance of a supervised cross-subject classifier under wearable EEG constraints, which is a more deployment-focused question instead of trying to outperform state-of-the-art cross-subject deep learning systems.",
       },
     ],
   },
@@ -125,28 +121,32 @@ const SECTIONS: Section[] = [
       },
       {
         type: "minihead",
-        text: "Bandpass filtering (1–40 Hz): We applied a 4th-order zero-phase Butterworth bandpass filter from 1 Hz to 40 Hz. The lower cutoff of 1 Hz removes slow baseline drift while preserving delta-band neural activity. The upper cutoff of 40 Hz was chosen because the SAM40 data were recorded in Europe, where mains electrical interference occurs at 50 Hz; filtering below this frequency retains all neural signal of interest while avoiding the powerline artifact. A separate 50 Hz notch filter was additionally applied to suppress any residual powerline interference.",
+        text: "Bandpass filtering (1-40 Hz): We applied a 4th-order zero-phase Butterworth bandpass filter from 1 Hz to 40 Hz. The lower cutoff of 1 Hz removes slow baseline drift while preserving delta-band neural activity. The upper cutoff of 40 Hz was chosen because the SAM40 data were recorded in Europe, where mains electrical interference occurs at 50 Hz; filtering below this frequency retains all neural signals of interest while avoiding the powerline artifact. A separate 50 Hz notch filter was additionally applied to suppress any residual powerline interference.",
       },
       {
         type: "minihead",
-        text: "Average reference: We applied a common average reference (CAR), subtracting the mean signal across all 32 channels from each channel at every time point. CAR is preferred over a single reference electrode when the reference electrode itself may carry neural signal, as is common in scalp EEG. It reduces the influence of any single electrode's noise on the entire recording and is standard practice in EEG affective computing research [3].",
+        text: "Average reference: We applied a common average reference (CAR), and removed the mean signal across all 32 channels from each channel at every time point. CAR is preferred over a single reference electrode when the reference electrode itself may carry neural signal, as is common in scalp EEG. It reduces the influence of any single electrode's noise on the entire recording and is standard practice in EEG affective computing research [3].",
       },
       {
         type: "minihead",
-        text: "ICA artifact removal: Independent Component Analysis (FastICA, 15 components, random state 42, maximum 800 iterations) was applied to decompose the multichannel signal into statistically independent sources. Ocular artifact components were automatically identified using Fp1 as an electrooculogram (EOG) proxy channel with a z-score threshold of 2.5 standard deviations, and removed before back-projection. This step reduced peak-to-peak amplitude from ±1,096 µV to ±181 µV, confirming successful removal of eye blink and saccade artifacts.",
+        text: "ICA artifact removal: Independent Component Analysis (FastICA, 15 components, random state 42, maximum 800 iterations) was applied to decompose the multichannel signal into statistically independent sources. Ocular artifact components were automatically identified using Fp1 as an electrooculogram (EOG) proxy channel with a z-score threshold of 2.5 standard deviations, and removed before back-projection. This step reduced peak-to-peak amplitude from +/-1,096 uV to +/-181 uV, confirming successful removal of eye blink and saccade artifacts.",
       },
       {
         type: "minihead",
-        text: "Wearable simulation and upper bound caveat: For the wearable condition, electrodes T7 and T8 were extracted after the full 32-channel preprocessing pipeline described above. This is an important methodological limitation: both common average reference and ICA decomposition exploit information from all 32 channels before T7/T8 extraction. A real two-electrode wearable device cannot perform 32-channel ICA or compute a 32-channel average reference. Current results therefore represent an upper bound on achievable wearable performance. A wearable-feasible preprocessing pipeline using bipolar T7-T8 referencing and single-channel threshold-based artifact rejection is planned for Layer 2.",
+        text: "Wearable simulation and upper bound caveat: For the wearable condition, electrodes T7 and T8 were extracted after the full 32-channel preprocessing pipeline described above. This is an important methodological limitation: both common average reference and ICA decomposition exploit information from all 32 channels before T7/T8 extraction. A real two-electrode wearable device cannot perform 32-channel ICA or compute a 32-channel average reference. Current results therefore, represent an upper bound on achievable wearable performance. A wearable-feasible preprocessing pipeline using bipolar T7-T8 referencing and single-channel threshold-based artifact rejection is planned for Layer 2.",
       },
       { type: "subhead", text: "3.3 Feature Extraction: Differential Entropy" },
       {
         type: "para",
-        text: "We used differential entropy (DE) as the spectral feature. The rationale for this choice over raw band power is that raw band power estimates are sensitive to absolute amplitude, which varies substantially across subjects due to differences in skull thickness, electrode impedance, and individual neurophysiology. DE captures spectral shape rather than absolute amplitude, making it more stable across subjects. For a Gaussian-distributed signal with variance σ², the differential entropy is given by DE = (1/2) log(2πeσ²). Following Shi et al. [12] and established practice [3], for fixed-length EEG epochs this simplifies to the computationally efficient approximation DE = log(var(x_band) + ε), where x_band is the bandpass-filtered epoch and ε is a small constant to avoid log(0).",
+        text: "We used differential entropy (DE) as the spectral feature. The rationale for this choice over raw band power is that raw band power estimates are sensitive to absolute amplitude, which varies substantially across subjects due to differences in skull thickness, electrode impedance, and individual neurophysiology. This makes it more stable across subjects, as DE captures the spectral shape instead of the absolute amplitude.",
       },
       {
         type: "para",
-        text: "DE was computed per channel, per frequency band, per 4-second sliding window with 50% overlap. Five standard frequency bands were used: delta (1–3 Hz), theta (4–7 Hz), alpha (8–13 Hz), beta (14–30 Hz), and gamma (31–40 Hz). For the wearable condition, only T7 and T8 were used, producing a 10-dimensional feature vector (2 channels × 5 bands). For the full-channel condition, all 32 channels produced a 160-dimensional feature vector.",
+        text: "For a Gaussian-distributed signal with variance σ², the differential entropy is given by DE = (1/2) log(2πeσ²). Following Shi et al. [12] and established practice [3], for fixed-length EEG epochs this simplifies to the computationally efficient approximation DE = log(var(x_band) + epsilon), where x_band is the bandpass-filtered epoch and epsilon is a small constant to avoid log(0).",
+      },
+      {
+        type: "para",
+        text: "DE was computed per channel, per frequency band, per 4-second sliding window with 50% overlap. Five standard frequency bands were used: delta (1-3 Hz), theta (4-7 Hz), alpha (8-13 Hz), beta (14-30 Hz), and gamma (31-40 Hz). For the wearable condition, only T7 and T8 were used, producing a 10-dimensional feature vector (2 channels x 5 bands). For the full-channel condition, all 32 channels produced a 160-dimensional feature vector.",
       },
       { type: "subhead", text: "3.4 Models" },
       {
@@ -224,7 +224,7 @@ const SECTIONS: Section[] = [
       },
       {
         type: "minihead",
-        text: "Personalisation advantage persists under electrode reduction. The 7.3-percentage-point accuracy gain of the baseline model is nearly identical under wearable and full-channel conditions, indicating the benefit does not depend on spatial richness across the scalp. The wearable population classifier AUC of 0.562 is barely above chance, suggesting cross-subject stress patterns carry very little discriminative information in the temporal-only configuration. For 2-channel devices, this result supports investing in short per-user calibration workflows over more complex cross-subject models. Additionally, due to SAM40 lacking physiological validation measures like cortisol or heart-rate variability, the present findings are more precisely interpreted as task-deviation detection under cognitive-affective load.",
+        text: "Personalisation advantage persists under electrode reduction. The 7.3-percentage-point accuracy gain of the baseline model is nearly identical under wearable and full-channel conditions, which suggests that the benefit does not depend on spatial richness across the scalp. The wearable population classifier AUC of 0.562 is barely above chance, meaning that cross-subject stress patterns carry very little discriminative information in the temporal-only configuration. For 2-channel devices, this result supports investing in short per-user calibration workflows over more complex cross-subject models. Additionally, due to SAM40 lacking physiological validation measures like cortisol or heart-rate variability, the present findings are more precisely interpreted as task-deviation detection under cognitive-affective load.",
       },
       {
         type: "minihead",
@@ -232,11 +232,7 @@ const SECTIONS: Section[] = [
       },
       {
         type: "para",
-        text: "32.5% of subjects show alpha enhancement rather than suppression. Population classifiers with fixed directional assumptions systematically misclassify this subgroup. Tracking signed rather than magnitude deviation in the alpha band is a target improvement for Layer 2.",
-      },
-      {
-        type: "minihead",
-        text: "Baseline signal stability predicts responder status. Subjects with more stable resting EEG are more likely to be correctly classified, suggesting that a brief resting-state recording at device startup could serve as a calibration quality screen, analogous to fingerprint quality checks in biometric authentication.",
+        text: "32.5% of subjects show alpha enhancement rather than suppression. Population classifiers with fixed directional assumptions systematically misclassify this subgroup. Tracking signed rather than magnitude deviation in the alpha band is a target improvement for Layer 2. Baseline signal stability predicts responder status. Subjects with more stable resting EEG are more likely to be correctly classified, suggesting that a brief resting-state recording at device startup could serve as a calibration quality screen, analogous to fingerprint quality checks in biometric authentication.",
       },
       {
         type: "para",
@@ -287,7 +283,7 @@ const SECTIONS: Section[] = [
     blocks: [
       {
         type: "para",
-        text: "This pilot study demonstrates that a simple, transparent unsupervised personalisation approach significantly outperforms a supervised cross-subject population classifier for EEG stress detection, even when analysis is restricted to two temporal electrodes simulating a consumer wearable device. The personalisation advantage is statistically significant with a medium effect size and is robust to electrode reduction. SHAP analysis identifies temporal alpha differential entropy as the primary wearable stress biomarker, and the existence of a consistent alpha-enhancing subpopulation (32.5% of subjects) highlights the importance of directional personalisation over fixed-direction assumptions. These findings are modest in absolute accuracy terms and rest on a mild-stressor dataset without physiological stress validation; they are best interpreted as strong motivation for the original data collection planned in Layer 2.",
+        text: "This pilot study demonstrates that a simple and unsupervised personalisation approach significantly outperforms a supervised cross-subject population classifier for EEG stress detection, even when analysis is restricted to two temporal electrodes simulating a consumer wearable device. The personalisation advantage is statistically significant with a medium effect size and is robust to electrode reduction. SHAP analysis identifies temporal alpha differential entropy as the primary wearable stress biomarker, and the existence of a consistent alpha-enhancing subpopulation (32.5% of subjects) highlights the importance of directional personalisation over fixed-direction assumptions. These findings are modest in absolute accuracy terms and rest on a mild-stressor dataset without physiological stress validation; they are best interpreted as strong motivation for the original data collection planned in Layer 2.",
       },
       {
         type: "para",
@@ -309,7 +305,7 @@ const SECTIONS: Section[] = [
       },
       {
         type: "para",
-        text: "Layer 3 will test the key findings on real consumer wearable hardware to validate the simulation assumption underlying Layer 1 and quantify the real-world performance gap. My aim is to learn and implement this full research pipeline in person within a laboratory setting, and thereafter to use the experience to design and execute further investigations in neurotech stress monitoring.",
+        text: "Layer 3 will test the key findings on real consumer wearable hardware to validate the simulation assumption underlying Layer 1 and quantify the real-world performance gap. I aim to learn and implement this full research pipeline in person within a laboratory setting, and thereafter to use the experience to design and execute further investigations in neurotech stress monitoring.",
       },
     ],
   },
