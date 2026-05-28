@@ -75,7 +75,7 @@ export default function About() {
                   { label: "LinkedIn",      href: "https://www.linkedin.com/in/oyku-nur-kesek/" },
                   { label: "Newsletter",    href: "https://oykukesek.substack.com/" },
                   { label: "GitHub",        href: "https://github.com/oykunur08-ui" },
-                  { label: "Research Paper PDF", href: "https://drive.google.com/file/d/16XSafjZ41whivFS8FwHjvEZrJfFMMdM5/view?usp=sharing" },
+                  { label: "Research Paper PDF", href: "/research-paper.pdf" },
                 ].map(({ label, href }) => (
                   <a
                     key={label}
