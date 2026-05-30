@@ -93,7 +93,7 @@ export default function Theory() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="blueprint-grid rounded-2xl p-6 border border-stone"
+              className="blueprint-grid rounded-[28px] p-8 border border-stone card-lift"
             >
               <div className="text-xs font-mono text-mist/60 mb-5">Research tension</div>
               <div className="space-y-3">
@@ -105,7 +105,7 @@ export default function Theory() {
                 ].map(({ label, state, color, bold }) => (
                   <div
                     key={label}
-                    className={`flex items-center gap-4 p-3 rounded-lg ${bold ? "bg-navy/8" : "bg-stone/30"}`}
+                    className={`flex items-center gap-4 p-3 rounded-xl ${bold ? "bg-navy/8" : "bg-stone/30"}`}
                   >
                     <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: color }} />
                     <span className={`text-xs leading-snug ${bold ? "font-semibold text-ink" : "text-dim"}`}>{label}</span>
@@ -127,16 +127,16 @@ export default function Theory() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="group"
+              className="group p-6 border border-stone/60 rounded-[24px] hover:border-stone transition-colors duration-300 card-lift"
             >
               <div
                 className="w-8 h-px mb-4 transition-all duration-300 group-hover:w-16"
                 style={{ background: step.color }}
               />
               <div className="text-xs font-mono text-mist mb-3">{step.num}</div>
-              <div className="text-sm font-semibold text-ink mb-2">{step.title}</div>
+              <div className="text-sm font-bold text-ink mb-2">{step.title}</div>
               <div
-                className="text-xs font-mono px-2 py-1 rounded mb-3 inline-block"
+                className="text-xs font-mono px-2 py-1 rounded-lg mb-3 inline-block"
                 style={{ background: `${step.color}18`, color: step.color }}
               >
                 {step.formula}
@@ -149,7 +149,7 @@ export default function Theory() {
         {/* Stability vs utility dissociation */}
         <div className="rule mb-16" />
         <SectionLabel className="mb-8">The core dissociation</SectionLabel>
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 gap-6 mb-16">
           {DISSOCIATION.map(({ label, items, color }) => (
             <motion.div
               key={label}
@@ -157,7 +157,7 @@ export default function Theory() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="border border-stone rounded-xl p-6"
+              className="border border-stone card-arch p-8 card-lift"
             >
               <div
                 className="text-xs font-mono mb-5"
@@ -183,7 +183,7 @@ export default function Theory() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="p-8 border border-stone rounded-2xl bg-linen"
+          className="p-10 border border-stone rounded-[28px] bg-linen card-lift"
         >
           <div className="flex flex-col md:flex-row gap-8 md:gap-16">
             <div className="md:w-1/4 flex-shrink-0">

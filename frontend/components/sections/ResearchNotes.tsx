@@ -58,7 +58,7 @@ const FUTURE = [
 
 export default function ResearchNotes() {
   return (
-    <section id="notes" className="bg-parchment py-section border-t border-stone">
+    <section id="notes" className="bg-linen py-section border-t border-stone">
       <div className="container-wide">
         <SectionLabel className="mb-6">Chapter 07. Research Notes</SectionLabel>
 
@@ -89,7 +89,7 @@ export default function ResearchNotes() {
           </div>
         </div>
 
-        {/* Notes grid */}
+        {/* Notes grid — arched cards */}
         <div className="grid md:grid-cols-2 gap-6 mb-20">
           {NOTES.map((note, i) => (
             <motion.div
@@ -98,10 +98,10 @@ export default function ResearchNotes() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.7 }}
-              className="border border-stone rounded-xl p-7"
+              className="border border-stone card-arch p-8 card-lift bg-parchment/40"
             >
               <div className="text-xs font-mono text-mist/60 mb-3">{note.id}</div>
-              <h3 className="text-sm font-semibold text-ink mb-3">{note.title}</h3>
+              <h3 className="text-sm font-bold text-ink mb-3">{note.title}</h3>
               <p className="text-sm text-mist leading-relaxed">{note.body}</p>
             </motion.div>
           ))}
@@ -141,19 +141,79 @@ export default function ResearchNotes() {
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="rule mt-20 mb-8" />
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <div className="text-sm font-semibold text-ink mb-1">BASELINE</div>
-            <div className="text-xs text-mist">
-              EEG Feature Alignment · Research Prototype · 2026
+        {/* Footer — wave + rich layout */}
+        <div className="relative mt-24">
+          {/* Organic wave separator */}
+          <svg
+            viewBox="0 0 1440 56"
+            className="w-full mb-0"
+            preserveAspectRatio="none"
+            style={{ height: 40, display: "block" }}
+            aria-hidden="true"
+          >
+            <path
+              d="M0,28 C240,56 480,0 720,28 C960,56 1200,0 1440,28 L1440,56 L0,56 Z"
+              fill="var(--stone)"
+              opacity="0.35"
+            />
+          </svg>
+
+          <div className="pt-10 pb-4 border-t border-stone">
+            <div className="flex flex-col lg:flex-row justify-between items-start gap-12">
+              {/* Left — brand block */}
+              <div className="lg:w-1/3">
+                <div className="text-2xl font-bold text-ink tracking-tight mb-3">BASELINE</div>
+                <div className="text-xs text-mist leading-relaxed max-w-xs">
+                  EEG Feature Alignment · Research Prototype · 2026
+                </div>
+                <div className="text-xs text-mist/60 mt-4 leading-relaxed max-w-xs">
+                  Not a medical device. Not a diagnostic tool.
+                  A research concept exploring lightweight personalization
+                  under wearable EEG deployment constraints.
+                </div>
+              </div>
+
+              {/* Right — multi-column nav links */}
+              <div className="flex flex-wrap gap-12 lg:gap-16">
+                <div>
+                  <div className="text-xs font-mono text-mist/50 mb-4 uppercase tracking-widest">Research</div>
+                  <div className="space-y-2.5">
+                    {[
+                      { label: "Problem",     id: "problem" },
+                      { label: "Framework",   id: "theory" },
+                      { label: "Experiments", id: "experiments" },
+                      { label: "Lab",         id: "lab" },
+                    ].map(({ label, id }) => (
+                      <button
+                        key={id}
+                        onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}
+                        className="block text-xs text-mist hover:opacity-70 transition-opacity duration-200 text-left"
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs font-mono text-mist/50 mb-4 uppercase tracking-widest">About</div>
+                  <div className="space-y-2.5">
+                    {[
+                      { label: "Researcher",     id: "about" },
+                      { label: "Paper",          id: "paper" },
+                      { label: "Notes",          id: "notes" },
+                    ].map(({ label, id }) => (
+                      <button
+                        key={id}
+                        onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}
+                        className="block text-xs text-mist hover:opacity-70 transition-opacity duration-200 text-left"
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="text-xs text-mist max-w-sm text-right leading-relaxed">
-            Not a medical device. Not a diagnostic tool.
-            A research concept exploring lightweight personalization
-            under wearable EEG deployment constraints.
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ const INTERESTS = [
 
 export default function About() {
   return (
-    <section id="about" className="relative bg-parchment py-section overflow-hidden border-t border-stone">
+    <section id="about" className="relative bg-linen py-section overflow-hidden border-t border-stone">
       {/* Blueprint grid */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.035]"
@@ -23,6 +23,21 @@ export default function About() {
             linear-gradient(90deg, rgba(27,63,122,0.06) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
+        }}
+      />
+
+      {/* Ambient blob */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: "20%",
+          right: "-8%",
+          width: "min(500px, 40vw)",
+          height: "min(500px, 40vw)",
+          background: "radial-gradient(circle, rgba(30,107,92,0.15) 0%, transparent 70%)",
+          filter: "blur(72px)",
+          opacity: 0.2,
+          borderRadius: "50%",
         }}
       />
 
@@ -53,7 +68,7 @@ export default function About() {
             />
 
             {/* Profile image */}
-            <div className="relative aspect-[3/4] overflow-hidden rounded bg-stone/20 border border-stone">
+            <div className="card-img relative aspect-[3/4] overflow-hidden rounded-[24px] bg-stone/20 border border-stone">
               <Image
                 src="/profile.jpg"
                 alt="Öykü Nur Kesek"
@@ -64,9 +79,9 @@ export default function About() {
             </div>
 
             {/* Name / role tag */}
-            <div className="mt-5">
+            <div className="mt-6">
               <div className="text-xs font-mono text-mist mb-1">Student Researcher</div>
-              <div className="text-sm font-semibold text-ink mb-4">
+              <div className="text-sm font-bold text-ink mb-4">
                 Öykü Nur Kesek
               </div>
               <div className="flex flex-wrap gap-2">
@@ -82,7 +97,7 @@ export default function About() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs px-3 py-1.5 border border-stone text-mist
+                    className="tag-scale text-xs px-3 py-1.5 border border-stone text-mist
                                rounded-full hover:border-dim hover:text-dim
                                transition-all duration-200"
                   >
@@ -171,7 +186,7 @@ export default function About() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.6 }}
-                className="flex items-start justify-between gap-8 py-4 border-b border-stone last:border-0 group"
+                className="flex items-start justify-between gap-8 py-5 border-b border-stone last:border-0 group"
               >
                 <div className="flex items-start gap-4">
                   <span className="text-xs font-mono text-mist/40 mt-0.5 w-5 flex-shrink-0">

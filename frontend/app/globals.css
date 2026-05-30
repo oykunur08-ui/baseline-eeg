@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,300;1,9..40,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -44,15 +44,15 @@ body {
 
 /* ── Typography ── */
 .display {
-  font-size: clamp(3.5rem, 11vw, 10rem);
-  font-weight: 300;
-  line-height: 0.92;
+  font-size: clamp(4rem, 13vw, 11rem);
+  font-weight: 800;
+  line-height: 0.9;
   letter-spacing: -0.04em;
 }
 
 .headline {
-  font-size: clamp(2rem, 5vw, 5rem);
-  font-weight: 300;
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
@@ -179,4 +179,81 @@ body {
   background-size: 200px 200px;
   z-index: 9999;
   opacity: 0.4;
+}
+
+/* ── Interactive motion system ── */
+
+/* Card lift on hover */
+.card-lift {
+  transition: transform 220ms ease-out, box-shadow 220ms ease-out;
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Tag / icon scale on hover */
+.tag-scale {
+  display: inline-block;
+  transition: transform 180ms ease-out;
+}
+.tag-scale:hover {
+  transform: scale(1.05);
+}
+
+/* ── Hero decorative blobs ── */
+.hero-section::before,
+.hero-section::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-section::before {
+  top: 5%;
+  right: -5%;
+  width: min(700px, 55vw);
+  height: min(700px, 55vw);
+  background: radial-gradient(circle, rgba(30, 107, 92, 0.45) 0%, transparent 65%);
+  filter: blur(80px);
+  opacity: 0.18;
+}
+.hero-section::after {
+  bottom: 8%;
+  left: -5%;
+  width: min(550px, 45vw);
+  height: min(550px, 45vw);
+  background: radial-gradient(circle, rgba(27, 63, 122, 0.45) 0%, transparent 65%);
+  filter: blur(80px);
+  opacity: 0.18;
+}
+
+/* ── Card image defaults ── */
+.card-img img {
+  border-radius: inherit;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* ── Arched feature card ── */
+.card-arch {
+  border-radius: 32px 32px 10px 10px;
+}
+
+/* ── Footer wave separator ── */
+.footer-wave {
+  position: relative;
+  overflow: visible;
+}
+.footer-wave::before {
+  content: '';
+  position: absolute;
+  top: -48px;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: var(--linen);
+  clip-path: ellipse(56% 100% at 50% 100%);
+  pointer-events: none;
 }

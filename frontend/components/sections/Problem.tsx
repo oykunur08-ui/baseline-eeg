@@ -80,7 +80,7 @@ export default function Problem() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="mt-12 p-6 border border-stone rounded-xl"
+              className="mt-12 p-8 border border-stone card-arch bg-parchment card-lift"
             >
               <div className="text-xs text-mist mb-2">Core hypothesis</div>
               <p className="text-sm text-dim leading-relaxed font-light italic">
@@ -97,18 +97,18 @@ export default function Problem() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-5"
             >
               {PROBLEMS.map((p) => (
                 <motion.div
                   key={p.id}
                   variants={item}
-                  className="p-6 border border-stone rounded-xl bg-parchment
-                             hover:border-dim/20 transition-colors duration-300 group"
+                  className="p-8 border border-stone card-arch bg-parchment
+                             hover:border-dim/20 transition-all duration-300 group card-lift"
                 >
                   <div className="text-xs text-mist font-mono mb-4">{p.id}</div>
-                  <h3 className="text-sm font-semibold text-ink mb-3">{p.title}</h3>
-                  <p className="text-xs text-mist leading-relaxed mb-4">{p.body}</p>
+                  <h3 className="text-sm font-bold text-ink mb-3">{p.title}</h3>
+                  <p className="text-xs text-mist leading-relaxed mb-5">{p.body}</p>
                   <div className="text-xs font-mono text-teal pt-3 border-t border-stone">
                     {p.metric}
                   </div>

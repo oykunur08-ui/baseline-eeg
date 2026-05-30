@@ -8,11 +8,6 @@ import type { PlotParams } from "react-plotly.js";
 const Plot = dynamic<PlotParams>(() => import("react-plotly.js"), { ssr: false });
 
 // ── Real BNCI Horizon 2020 results ────────────────────────────────────────────
-// Dataset: 001-2014 · Subject A01 · Train: A01T · Test: A01E (future session)
-// Channels: C3, C4, CP3, CP4 (4-channel wearable-constrained subset)
-// Features: theta power, alpha power, beta power, temporal variance
-// Classifier: logistic regression
-
 const METHODS     = ["Raw",    "Cov. Whitening", "Moving Avg"];
 const SHIFT       = [4.06,    0.22,              0.55];
 const ACCURACY    = [0.576,   0.576,             0.514];
@@ -34,7 +29,7 @@ const TABS = [
   { id: "protocol", label: "C · Evaluation Protocol" },
 ];
 
-// ── Drift chart — the central visual ─────────────────────────────────────────
+// ── Drift chart ───────────────────────────────────────────────────────────────
 function DriftChart() {
   return (
     <div>
@@ -154,7 +149,6 @@ function ProtocolPanel() {
 
   return (
     <div className="grid md:grid-cols-2 gap-10">
-      {/* Left: pipeline */}
       <div>
         <div className="text-xs font-mono text-mist mb-6">Evaluation pipeline</div>
         <div className="space-y-0">
@@ -179,7 +173,6 @@ function ProtocolPanel() {
         </div>
       </div>
 
-      {/* Right: channels + features */}
       <div>
         <div className="text-xs font-mono text-mist mb-6">Wearable-constrained setup</div>
 
@@ -189,7 +182,7 @@ function ProtocolPanel() {
             {channels.map(ch => (
               <span
                 key={ch}
-                className="text-xs font-mono px-3 py-1.5 rounded border border-teal/30 text-teal bg-teal/5"
+                className="text-xs font-mono px-3 py-1.5 rounded-full border border-teal/30 text-teal bg-teal/5 tag-scale"
               >
                 {ch}
               </span>
@@ -209,7 +202,7 @@ function ProtocolPanel() {
           </div>
         </div>
 
-        <div className="p-4 border border-stone rounded-xl bg-parchment/60">
+        <div className="p-5 border border-stone rounded-2xl bg-parchment/60">
           <div className="text-xs text-mist/60 mb-1">Leakage prevention</div>
           <p className="text-xs text-dim leading-relaxed">
             Adaptation statistics are fit exclusively on A01T. Test session A01E
@@ -291,7 +284,7 @@ export default function Experiments() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="mb-12 p-6 border border-stone rounded-xl bg-parchment/60"
+          className="mb-12 p-8 border border-stone rounded-[28px] bg-parchment/60 card-lift"
         >
           <div className="text-xs font-mono text-mist/60 mb-2">Central finding</div>
           <p className="text-sm text-dim leading-relaxed italic max-w-3xl">
@@ -300,8 +293,8 @@ export default function Experiments() {
           </p>
         </motion.div>
 
-        {/* Summary cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+        {/* Summary cards — arched */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-16">
           {summaryCards.map(({ label, value, sub, accent }, i) => (
             <motion.div
               key={label}
@@ -309,13 +302,13 @@ export default function Experiments() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.07, duration: 0.6 }}
-              className="bg-parchment border border-stone rounded-xl p-5"
+              className="bg-parchment border border-stone card-arch p-6 card-lift"
             >
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ background: accent }} />
                 <div className="text-xs text-mist leading-tight">{label}</div>
               </div>
-              <div className="text-2xl font-light text-ink tracking-tight mb-1">{value}</div>
+              <div className="text-2xl font-bold text-ink tracking-tight mb-1">{value}</div>
               <div className="text-xs text-mist/70 leading-snug">{sub}</div>
             </motion.div>
           ))}
@@ -339,7 +332,7 @@ export default function Experiments() {
         </div>
 
         {/* Chart panels */}
-        <div className="bg-parchment border border-stone rounded-2xl p-6 md:p-8">
+        <div className="bg-parchment border border-stone rounded-[28px] p-6 md:p-10">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -361,7 +354,7 @@ export default function Experiments() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="mt-8 grid md:grid-cols-3 gap-4"
+          className="mt-8 grid md:grid-cols-3 gap-5"
         >
           {[
             {
@@ -380,9 +373,9 @@ export default function Experiments() {
               body: "Feature stabilization did not translate to decoding gains. This dissociation suggests the downstream model absorbed the remaining variance independently.",
             },
           ].map(({ num, title, body }) => (
-            <div key={num} className="p-5 border border-stone rounded-xl">
+            <div key={num} className="p-6 border border-stone card-arch card-lift">
               <div className="text-xs font-mono text-mist/50 mb-3">{num}</div>
-              <div className="text-xs font-semibold text-ink mb-2">{title}</div>
+              <div className="text-xs font-bold text-ink mb-2">{title}</div>
               <p className="text-xs text-mist leading-relaxed">{body}</p>
             </div>
           ))}

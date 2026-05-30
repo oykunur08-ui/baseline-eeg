@@ -6,9 +6,6 @@ import { motion } from "framer-motion";
 const seeded = (n: number) => { const s = Math.sin(n * 9301 + 49297) * 233280; return s - Math.floor(s); };
 
 // ── Neural wave background ────────────────────────────────────────────────────
-// Paths are computed once at module load — deterministic, no hydration mismatch.
-// Each wave is a sum of sine harmonics whose period divides W exactly,
-// so the path repeats at x = W and the 200%-wide SVG loops seamlessly.
 const WAVE_W = 1440;
 const WAVE_H = 600;
 
@@ -27,10 +24,8 @@ function buildWavePath(
   return pts.map((p, i) => (i === 0 ? `M${p}` : `L${p}`)).join(" ");
 }
 
-// Three channels: alpha-like (slow), beta-like (fast), theta-like (wide)
 const NEURAL_CHANNELS = [
   {
-    // Alpha band: ~2 cycles visible, moderate amplitude
     d: buildWavePath(WAVE_H * 0.22, [
       { amp: 28, fm: 2, phase: 0.0 },
       { amp: 8,  fm: 6, phase: 1.5 },
@@ -40,7 +35,6 @@ const NEURAL_CHANNELS = [
     opacity: 0.65,
   },
   {
-    // Beta band: ~3 cycles, tighter oscillation
     d: buildWavePath(WAVE_H * 0.52, [
       { amp: 20, fm: 3, phase: 2.1 },
       { amp: 9,  fm: 7, phase: 0.4 },
@@ -50,7 +44,6 @@ const NEURAL_CHANNELS = [
     opacity: 0.50,
   },
   {
-    // Theta band: 1 slow cycle, large amplitude
     d: buildWavePath(WAVE_H * 0.80, [
       { amp: 34, fm: 1, phase: 1.0 },
       { amp: 12, fm: 4, phase: 3.1 },
@@ -67,10 +60,6 @@ function NeuralWaveBackground() {
       className="absolute inset-0 overflow-hidden pointer-events-none"
       style={{ opacity: 0.17 }}
     >
-      {/*
-        SVG is 200% wide so the second half exactly repeats the first.
-        CSS translateX(-50%) scrolls it left by one viewport width, then loops.
-      */}
       <svg
         className="neural-bg-scroll"
         viewBox={`0 0 ${WAVE_W * 2} ${WAVE_H}`}
@@ -147,7 +136,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-between bg-parchment overflow-hidden pt-14"
+      className="hero-section relative min-h-screen flex flex-col justify-between bg-parchment overflow-hidden pt-14"
     >
       {/* Neural wave background */}
       <NeuralWaveBackground />
@@ -164,17 +153,42 @@ export default function Hero() {
         }}
       />
 
+      {/* Extra ambient blob — top-left */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: "15%",
+          left: "5%",
+          width: "min(400px, 35vw)",
+          height: "min(400px, 35vw)",
+          background: "radial-gradient(circle, rgba(184,131,42,0.18) 0%, transparent 70%)",
+          filter: "blur(64px)",
+          opacity: 0.22,
+          borderRadius: "50%",
+        }}
+      />
+
       {/* Hero content */}
       <div className="w-full max-w-[1440px] mx-auto pl-6 pr-6 md:pl-10 md:pr-10 lg:pl-14 lg:pr-14 flex-1 flex flex-col justify-center">
-        <motion.h1 className="display text-ink leading-none mb-6">
+        <motion.h1
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="display text-ink leading-none mb-8"
+        >
           BASE
           <br />
           LINE
         </motion.h1>
 
-        <p className="text-xl text-dim max-w-xl">
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="text-xl md:text-2xl text-dim font-normal leading-relaxed max-w-xl"
+        >
           Neural signals only become meaningful when interpreted relative to themselves.
-        </p>
+        </motion.p>
       </div>
 
       <div className="container-wide pb-12">
